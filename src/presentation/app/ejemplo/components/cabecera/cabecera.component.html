@@ -1,0 +1,21 @@
+<H3>CABECERA</H3>
+<div class="row">
+    <div class="col-6">
+        <!-- <dx-number-box label="Código" [min]="0" [max]="99" [showSpinButtons]="false"
+            [(value)]="cabecera.descripcion"></dx-number-box> -->
+        <dx-text-area [height]="90" [(value)]="cabecera.descripcion" labelMode="floating"
+            label="Descripción"></dx-text-area>
+    </div>
+    <div class="col-6">
+        <dx-date-box label="Fecha" labelMode="floating" [(value)]="cabecera.fecha" displayFormat="dd/MM/yyyy"
+            type="date">
+        </dx-date-box>
+        <dx-text-box label="Json" placeholder="Json" labelMode="floating" [visible]="true"
+           ></dx-text-box>
+        <dx-file-uploader id="input-aaa"  selectButtonText="Select photo" labelText="" accept="*" uploadMode="useForm" 
+            name="cargar">
+        </dx-file-uploader>
+        <button (click)="handleFile()">Obtener Valor Binario</button>
+    </div>
+</div>
+<pre> {{cabecera}}</pre>

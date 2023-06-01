@@ -1,0 +1,32 @@
+<dx-data-grid  id="gridContainer" [dataSource]="datasource" [keyExpr]="keyExpr" [showBorders]="true" [id]="'gridprueba'"  [visible]="hasLoader" (onContentReady)="onLoad()"
+  [columns]="columns" [showBorders]="true" (onSelectionChanged)="onSelectionChangedLibrary($event)"
+  [(selectedRowKeys)]="selectedRowKeys" >
+
+   <!-- <ng-container *ngIf="headers.length!=0"> -->
+    <dxi-column *ngFor="let item of headers" [alignment]="item.aligment" [dataField]="item.name"  [format]="item.format"
+      [caption]="item.caption" [width]="item.width" [visible]="item.visible">
+      <div *ngIf="item.dataList" >
+        <dxo-lookup [dataSource]="item.dataList" valueExpr="valueExpr" displayExpr="displayExpr" ></dxo-lookup>
+      </div>
+    </dxi-column>
+    <dxi-column
+    dataField=""
+    width="5%"
+    [allowFiltering]="false"
+    [allowSorting]="false"
+    cellTemplate="cellTemplate"
+  ></dxi-column>
+  <!-- </ng-container> -->
+  <dxo-paging [pageSize]="10" [pageIndex]="0" style="background: red;">
+  </dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  <dxo-selection mode="single" selectAllMode="allPages" showCheckBoxesMode="always" >
+  </dxo-selection>
+  <dxo-filter-row [visible]="filterActive"></dxo-filter-row>
+  <div *dxTemplate="let data of 'cellTemplate'">
+   <dx-button icon="edittableheader" (onClick)="editButton.emit(data.key)"></dx-button>
+  </div>
+</dx-data-grid>
+
+<img src="../../../../../assets/loader.svg" *ngIf="!hasLoader"
+class="mt-3 logo-img"  height="35" width="35"/>

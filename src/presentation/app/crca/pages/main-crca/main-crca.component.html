@@ -1,0 +1,19 @@
+<div class="container">
+    <br>
+    <h3 class="text-center">Partido Social Cristiano</h3>
+    <div class="row mb-2">
+        <div class="col-12">
+            <dx-button stylingMode="contained" text="Nuevo Numerario" type="normal" (onClick)="numerario()">
+            </dx-button>
+            <dx-button stylingMode="contained" text="Nuevo Especie" type="default" (onClick)="especie()" class="mx-2">
+            </dx-button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <cne-data-grid [datasource]="allCrca" keyExpr="codigoCrca" (editButton)="editarCrca($event)"
+                 [headers]="headers"
+                [filterActive]="true" ></cne-data-grid>
+        </div>
+    </div>
+</div>

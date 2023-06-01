@@ -1,0 +1,231 @@
+<h3 class="text-center" style="color: rgb(65, 65, 201);">PROCESO ELECTORAL: "ELECCIONES 2023"</h3>
+
+  
+<form [formGroup]="formCrca" (ngSubmit)="guardar($event)">
+    <div class="row mb-2 ">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Fecha de ingreso:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <dx-text-box placeholder="dd/mm/yyyy" labelMode="floating" [readOnly]="true"
+                        [visible]="true"></dx-text-box>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Estado CRCA:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <dx-text-box  placeholder="Estado" labelMode="floating" [visible]="true"  value="{{formCrca.value.estado | estadoPipe}}" [readOnly]="true"
+                        ></dx-text-box>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Fecha de Recepción:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <dx-date-box placeholder="Fecha de Recepción" 
+                        displayFormat="dd/MM/yyyy" type="date" formControlName="fechaRecepcion" >
+                    </dx-date-box>
+                    <span *ngIf="isValidField('fechaRecepcion')" class="text-danger"> {{menssage.required}}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mb-2">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Tipo de Aportante:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <cne-select-box [dataSource]="tipoAportante" valueExpr="codigoPadre"  
+                        displayExpr="descripcion" ></cne-select-box>
+                        <!-- <span *ngIf="isValidField('tipoCrca')" class="text-danger"> Este Campo obligatorio</span> -->
+                    <!-- <dx-text-box placeholder="Tipo de Aportante" labelMode="floating" [visible]="true"></dx-text-box> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-6 ">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Fuente de ingreso de la OP:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <cne-select-box [dataSource]="tipoAportante" valueExpr="codigoPadre" 
+                        displayExpr="descripcion"></cne-select-box>
+                       
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Cédula / Ruc:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <div class="input-group">
+                        <dx-text-box placeholder="Cédula / Ruc" labelMode="floating" [visible]="true" formControlName="dniAportante" 
+                           ></dx-text-box>
+                        <div class="input-group-append">
+                            <dx-button stylingMode="contained" text="" icon="find" type="normal" class="mx-2" (onClick)="buscarPersona()">
+                            </dx-button>
+                        </div>
+                    <span *ngIf="isValidField('dniAportante')" class="text-danger">  {{menssage.required}}</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-6 mb-2">
+            <div class="row">
+                <div class="col-12">
+                    <dx-text-box placeholder="Nombre y Apellidos del aportante" labelMode="floating" formControlName="nombreAportante" [readOnly]="false"
+                        [visible]="true"></dx-text-box>
+                        <span *ngIf="isValidField('nombreAportante')" class="text-danger">  {{menssage.required}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Aporte en:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <cne-select-box [dataSource]="aporteEn" valueExpr="codigoPadre" [controlName]="'codigoCatalogoTipoAporteCrca'"
+                        displayExpr="descripcion"></cne-select-box>
+                        <span *ngIf="isValidField('codigoCatalogoTipoAporteCrca')" class="text-danger">  {{menssage.required}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Otros:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <dx-text-box placeholder="Otros" labelMode="floating" [visible]="true"></dx-text-box>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Valor de Aporte:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <dx-number-box [min]="0" [max]="99999999.99" [showSpinButtons]="false"  pattern="" formControlName="valorNumero" placeholder="0.00"
+                        ></dx-number-box>
+                        <span *ngIf="formCrca.controls['valorNumero'].touched && formCrca.controls['valorNumero'].errors?.['required'] " class="text-danger"> {{menssage.required}}</span>
+                        <span *ngIf="formCrca.controls['valorNumero'].touched &&  formCrca.controls['valorNumero'].errors?.['pattern']" class="text-danger">{{menssage.twoDecimal}} </span>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <dx-text-box placeholder="Valor en letras" labelMode="floating" [visible]="true" formControlName="valorLetras"></dx-text-box>
+                    <span *ngIf="isValidField('valorLetras')" class="text-danger">  {{menssage.required}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Banco / Cooperativa:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <dx-text-box placeholder="Banco o Cooperativa" labelMode="floating" [visible]="true"></dx-text-box>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Nro. de cuenta o Tarjeta:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <dx-text-box placeholder="Nro. de cuenta o Tarjetaa" labelMode="floating"
+                        [visible]="true"></dx-text-box>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Tipo de Cuenta:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <dx-text-box placeholder="Tipo de Cuenta" labelMode="floating" [visible]="true"></dx-text-box>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4 text-end">
+                    <label><strong>Origen de los Fondos:</strong> </label>
+                </div>
+                <div class="col-8">
+                    <dx-text-area placeholder="Origen de los Fondos" labelMode="floating" [visible]="true" formControlName="detalleAporte"
+                        [ariaRequired]="true"></dx-text-area>
+                        
+                        <span *ngIf="isValidField('detalleAporte')" class="text-danger"> {{menssage.required}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <app-anexos [(valueBase64)]="archivos" ></app-anexos>
+    <!-- <dx-button stylingMode="contained" text="Subir" type="default" [disabled]="false" (onClick)="subirArchivo($event)"
+        class="mx-2">
+    </dx-button> -->
+<div class=" text-center">
+    <dx-button stylingMode="Guardar" text="{{nameSaveUpdate}}" type="default" [disabled]="false"   [useSubmitBehavior]="true"
+        class="mx-2">
+    </dx-button>
+    <dx-button stylingMode="Cancelar" text="Cancelar" type="success" [disabled]="false"   (onClick)="salirFormulario($event)"
+    class="mx-2">
+</dx-button>
+</div>
+<!-- <h2>from valida: {{formCrca.valid}}</h2> -->
+    <!-- <h2>from valida: {{formCrca.valid}}</h2>
+    <h2>from status: {{formCrca.status}}</h2>
+
+   
+
+    <h2>from pending: {{formCrca.value | json}}</h2>
+    <h2>from errors: {{crca | json}}</h2> -->
+    <!-- <h2>archivos: {{archivos | json }}</h2> -->
+
+
+    <!-- <pre>form {{formCrca.controls['valorNumero'].errors | json}}</pre> -->
+    <!-- <h2>from pending: {{formCrca.value | json}}</h2> -->
+</form>
